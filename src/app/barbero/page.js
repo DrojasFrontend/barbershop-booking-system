@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { io } from 'socket.io-client';
 import { useRouter } from 'next/navigation';
+import ConfirmModal from '@/components/ConfirmModal';
+import NotificationContainer from '@/components/NotificationContainer';
+import { useNotification } from '@/hooks/useNotification';
 
 export default function BarberoPage() {
   const router = useRouter();
@@ -11,6 +14,9 @@ export default function BarberoPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [appointments, setAppointments] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [cancelModal, setCancelModal] = useState({ isOpen: false, appointmentId: null });
+  const [cancelReason, setCancelReason] = useState('');
+  const { notifications, removeNotification, success, error } = useNotification();
 
   useEffect(() => {
     checkAuth();
@@ -106,14 +112,20 @@ export default function BarberoPage() {
   };
 
   const handleCancel = (appointmentId) => {
-    const reason = prompt('Cancellation reason (optional):');
-    if (confirm('Are you sure you want to cancel this appointment? The client will be notified.')) {
-      updateAppointmentStatus(appointmentId, 'cancelled_by_barber', reason);
-    }
+    setCancelModal({ isOpen: true, appointmentId });
+    setCancelReason('');
+  };
+
+  const confirmCancel = () => {
+    updateAppointmentStatus(cancelModal.appointmentId, 'cancelled_by_barber', cancelReason);
+    setCancelModal({ isOpen: false, appointmentId: null });
+    setCancelReason('');
+    success('Appointment cancelled successfully');
   };
 
   const handleComplete = (appointmentId) => {
     updateAppointmentStatus(appointmentId, 'completed');
+    success('Appointment completed successfully');
   };
 
   const todayAppointments = appointments.filter(apt => {
@@ -328,6 +340,37 @@ export default function BarberoPage() {
           </div>
         </div>
       </div>
+
+      {/* Cancel Modal */}
+      <ConfirmModal
+        isOpen={cancelModal.isOpen}
+        onClose={() => setCancelModal({ isOpen: false, appointmentId: null })}
+        onConfirm={confirmCancel}
+        title="Cancel Appointment"
+        message="Are you sure you want to cancel this appointment? The client will be notified."
+        confirmText="Cancel Appointment"
+        cancelText="Keep Appointment"
+        confirmStyle="danger"
+      >
+        <div className="space-y-3">
+          <label className="block text-sm text-gray-400">
+            Cancellation reason (optional):
+          </label>
+          <textarea
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            className="w-full bg-gray-900 border border-gray-700 text-white p-3 text-sm focus:border-white focus:outline-none resize-none"
+            rows={3}
+            placeholder="Enter reason for cancellation..."
+          />
+        </div>
+      </ConfirmModal>
+
+      {/* Notifications */}
+      <NotificationContainer 
+        notifications={notifications} 
+        onRemove={removeNotification} 
+      />
     </div>
   );
 }

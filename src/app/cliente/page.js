@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { io } from 'socket.io-client';
+import NotificationContainer from '@/components/NotificationContainer';
+import InfoModal from '@/components/InfoModal';
+import { useNotification } from '@/hooks/useNotification';
 
 export default function ClientePage() {
   const [formData, setFormData] = useState({
@@ -24,6 +27,8 @@ export default function ClientePage() {
     phone: ''
   });
   const [isSearching, setIsSearching] = useState(false);
+  const [infoModal, setInfoModal] = useState({ isOpen: false, title: '', message: '' });
+  const { notifications, removeNotification, success, error } = useNotification();
 
   useEffect(() => {
     const newSocket = io();
@@ -42,7 +47,11 @@ export default function ClientePage() {
           ? `\nReason: ${updatedAppointment.cancellationReason}` 
           : '';
         
-        alert(`Your appointment on ${appointmentDate} has been cancelled by the barber.${reason}\n\nYou can book a new appointment!`);
+        setInfoModal({
+          isOpen: true,
+          title: 'Appointment Cancelled',
+          message: `Your appointment on ${appointmentDate} has been cancelled by the barber.${reason}\n\nYou can book a new appointment!`
+        });
       }
     });
 
@@ -83,7 +92,7 @@ export default function ClientePage() {
 
   const searchMyAppointments = async () => {
     if (!searchData.name || !searchData.phone) {
-      alert('Please enter your name and phone number');
+      error('Please enter your name and phone number');
       return;
     }
 
@@ -96,10 +105,10 @@ export default function ClientePage() {
         setAppointments(data);
         setShowMyAppointments(true);
       } else {
-        alert(data.error || 'Error searching appointments');
+        error(data.error || 'Error searching appointments');
       }
-    } catch (error) {
-      alert('Error searching appointments');
+    } catch (err) {
+      error('Error searching appointments');
     } finally {
       setIsSearching(false);
     }
@@ -109,7 +118,7 @@ export default function ClientePage() {
     e.preventDefault();
     
     if (!formData.date || !formData.time) {
-      alert('Please select date and time');
+      error('Please select date and time');
       return;
     }
 
@@ -153,10 +162,10 @@ export default function ClientePage() {
           notes: ''
         });
         setAvailableSlots([]);
-        alert('Appointment confirmed! ✓');
+        success('Appointment confirmed successfully! ✓');
       }
-    } catch (error) {
-      alert('Error booking appointment');
+    } catch (err) {
+      error('Error booking appointment');
     } finally {
       setIsSubmitting(false);
     }
@@ -407,6 +416,20 @@ export default function ClientePage() {
           </div>
         )}
       </div>
+
+      {/* Info Modal */}
+      <InfoModal
+        isOpen={infoModal.isOpen}
+        onClose={() => setInfoModal({ isOpen: false, title: '', message: '' })}
+        title={infoModal.title}
+        message={infoModal.message}
+      />
+
+      {/* Notifications */}
+      <NotificationContainer 
+        notifications={notifications} 
+        onRemove={removeNotification} 
+      />
     </div>
   );
 }
