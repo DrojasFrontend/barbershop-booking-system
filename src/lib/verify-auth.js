@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers';
 
-export function verifyAuth() {
+export async function verifyAuth() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const sessionCookie = cookieStore.get('auth-session');
 
     if (!sessionCookie) {

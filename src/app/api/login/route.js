@@ -33,7 +33,7 @@ export async function POST(request) {
     });
 
     // Configurar cookie
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     cookieStore.set('auth-session', sessionData, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

@@ -3,7 +3,7 @@ import { verifyAuth } from '@/lib/verify-auth';
 
 export async function GET() {
   try {
-    const user = verifyAuth();
+    const user = await verifyAuth();
 
     if (!user) {
       return NextResponse.json(
