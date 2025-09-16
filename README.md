@@ -1,36 +1,170 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🔥 BarberShop - Sistema de Turnos Inteligente
 
-## Getting Started
+Una aplicación web moderna para gestionar turnos de barbería con reservas inteligentes y comunicación en tiempo real.
 
-First, run the development server:
+## ✨ Características Principales
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 🗓️ **Reservas Inteligentes**: Sistema de calendario que previene conflictos de horarios
+- 👥 **Panel Dual**: Interfaces optimizadas para clientes y barberos
+- ⚡ **Tiempo Real**: Notificaciones instantáneas con Socket.IO
+- 🔐 **Autenticación Segura**: Acceso protegido para barberos
+- 📱 **Responsive**: Funciona perfectamente en móvil y desktop
+- 🔍 **Búsqueda de Turnos**: Clientes pueden consultar sus citas por nombre/teléfono
+
+## 🚀 Tecnologías
+
+- **Frontend**: Next.js 14, React, Tailwind CSS
+- **Backend**: Next.js API Routes, Socket.IO
+- **Base de Datos**: SQLite + Prisma ORM
+- **Autenticación**: Sistema personalizado con cookies seguras
+- **Tiempo Real**: Socket.IO para notificaciones instantáneas
+
+## 📦 Instalación
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone <tu-repo>
+   cd barbershop-app
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar base de datos**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+4. **Crear usuario barbero**
+   ```bash
+   node scripts/create-barber.js
+   ```
+
+5. **Datos de prueba (opcional)**
+   ```bash
+   node prisma/seed.js
+   ```
+
+6. **Iniciar la aplicación**
+   ```bash
+   npm run dev
+   ```
+
+7. **Abrir en el navegador**
+   ```
+   http://localhost:3000
+   ```
+
+## 🔐 Autenticación
+
+### Credenciales de Prueba
+- **Email**: barbero@test.com
+- **Contraseña**: 123456
+
+## 🎯 Uso
+
+### Para Clientes
+1. Ve a `/cliente`
+2. Completa el formulario con tus datos
+3. Selecciona el servicio deseado
+4. Envía la solicitud
+5. Recibe confirmación en tiempo real
+
+### Para Barberos
+1. Ve a `/login` e inicia sesión
+2. Accede automáticamente al panel del barbero
+3. Ve las solicitudes pendientes en tiempo real
+4. Aprueba o rechaza turnos
+5. Asigna horarios específicos
+6. Marca turnos como completados
+7. Cierra sesión cuando termines
+
+## 🔧 Estructura del Proyecto
+
+```
+barbershop-app/
+├── src/
+│   ├── app/
+│   │   ├── api/appointments/     # APIs REST
+│   │   ├── cliente/             # Panel del cliente
+│   │   ├── barbero/             # Panel del barbero
+│   │   └── page.js              # Página principal
+│   └── lib/
+│       └── prisma.js            # Configuración de Prisma
+├── prisma/
+│   ├── schema.prisma            # Esquema de base de datos
+│   └── seed.js                  # Datos de prueba
+└── server.js                    # Servidor con Socket.IO
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📊 Base de Datos
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Modelo Appointment
+- `id`: Identificador único
+- `clientName`: Nombre del cliente
+- `clientPhone`: Teléfono del cliente
+- `service`: Tipo de servicio
+- `status`: Estado (pending, approved, rejected, completed)
+- `requestedAt`: Fecha de solicitud
+- `scheduledAt`: Fecha programada
+- `notes`: Notas adicionales
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌟 Funcionalidades en Tiempo Real
 
-## Learn More
+- **Nuevas Solicitudes**: Los barberos reciben notificaciones instantáneas
+- **Actualizaciones de Estado**: Los clientes ven cambios en tiempo real
+- **Notificaciones del Navegador**: Alertas push para barberos
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Despliegue
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Desarrollo Local
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Producción
+```bash
+npm run build
+npm start
+```
 
-## Deploy on Vercel
+### Deploy en Railway/Render
+1. Conectar repositorio de GitHub
+2. Configurar variables de entorno (ver `.env.example`)
+3. Deploy automático
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Variables de Entorno Requeridas
+```env
+DATABASE_URL="file:./prisma/dev.db"
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="https://your-app-url.com"
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔮 Próximas Mejoras
+
+- [ ] Autenticación de barberos
+- [ ] Múltiples barberos
+- [ ] Calendario visual
+- [ ] Notificaciones por SMS/WhatsApp
+- [ ] Sistema de pagos
+- [ ] Historial de clientes
+- [ ] Métricas y reportes
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature
+3. Commit tus cambios
+4. Push a la rama
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+MIT License - ve el archivo LICENSE para más detalles.
+
+---
+
+**¡Disfruta gestionando tu barbería! ✂️**
