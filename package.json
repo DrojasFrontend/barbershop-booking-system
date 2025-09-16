@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "node server.js",
-    "build": "next build",
+    "build": "prisma generate && prisma db push && next build",
     "start": "NODE_ENV=production node server.js",
+    "postinstall": "prisma generate",
+    "setup": "prisma db push && node scripts/setup-schedule.js && node scripts/force-create-barber.js",
     "lint": "eslint"
   },
   "dependencies": {
