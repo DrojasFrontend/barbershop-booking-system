@@ -6,11 +6,19 @@ async function railwaySetup() {
     try {
         console.log('🚀 Configurando base de datos para Railway...\n');
 
+        // Verificar conexión a la base de datos
+        await prisma.$connect();
+        console.log('✅ Conexión a base de datos establecida');
+
         // Configurar horarios de trabajo
         console.log('📅 Configurando horarios de trabajo...');
 
-        // Limpiar horarios existentes
-        await prisma.barberSchedule.deleteMany();
+        // Limpiar horarios existentes (con manejo de errores)
+        try {
+            await prisma.barberSchedule.deleteMany();
+        } catch (error) {
+            console.log('ℹ️ No hay horarios existentes para limpiar');
+        }
 
         const schedules = [
             { dayOfWeek: 0, startTime: '10:00', endTime: '18:00' }, // Domingo
@@ -29,7 +37,11 @@ async function railwaySetup() {
         // Configurar duraciones de servicios
         console.log('⏱️ Configurando duraciones de servicios...');
 
-        await prisma.serviceDuration.deleteMany();
+        try {
+            await prisma.serviceDuration.deleteMany();
+        } catch (error) {
+            console.log('ℹ️ No hay duraciones existentes para limpiar');
+        }
 
         const services = [
             { service: 'corte', duration: 30 },
