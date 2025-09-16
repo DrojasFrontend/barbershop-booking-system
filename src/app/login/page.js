@@ -49,21 +49,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-700 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-10 w-20 h-20 border border-amber-400 rounded-full"></div>
+        <div className="absolute bottom-10 right-10 w-16 h-16 border border-amber-400 rounded-full"></div>
+        <div className="absolute top-1/3 right-1/4 w-12 h-12 border border-amber-400 rounded-full"></div>
+      </div>
+
+      <div className="max-w-md w-full relative z-10">
+        <div className="bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-sm border border-gray-700/50 rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
-              ✂️ Acceso Barbero
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full mb-4 shadow-lg">
+              <span className="text-2xl">✂️</span>
+            </div>
+            
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent mb-2">
+              Acceso Barbero
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Inicia sesión para gestionar turnos
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email
               </label>
               <input
@@ -71,13 +82,13 @@ export default function LoginPage() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-white placeholder-gray-400 transition-all duration-300"
                 placeholder="tu@email.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Contraseña
               </label>
               <input
@@ -85,13 +96,13 @@ export default function LoginPage() {
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-white placeholder-gray-400 transition-all duration-300"
                 placeholder="Tu contraseña"
               />
             </div>
 
             {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+              <div className="bg-red-900/50 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">
                 {error}
               </div>
             )}
@@ -99,7 +110,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+              className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 disabled:from-amber-300 disabled:to-yellow-300 text-black py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-amber-400/50"
             >
               {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </button>
@@ -108,20 +119,20 @@ export default function LoginPage() {
           <div className="mt-8 text-center">
             <Link 
               href="/" 
-              className="text-gray-500 hover:text-gray-700 transition-colors"
+              className="text-gray-400 hover:text-amber-400 transition-colors duration-300 flex items-center justify-center"
             >
-              ← Volver al inicio
+              <span className="mr-2">←</span> Volver al inicio
             </Link>
           </div>
 
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">
-              <strong>Credenciales de prueba:</strong>
+          <div className="mt-6 p-4 bg-gray-700/30 border border-gray-600/50 rounded-lg backdrop-blur-sm">
+            <p className="text-sm text-gray-300 mb-2">
+              <strong className="text-amber-400">Credenciales de prueba:</strong>
             </p>
-            <p className="text-xs text-gray-500">
-              Email: barbero@test.com<br />
-              Contraseña: 123456
-            </p>
+            <div className="text-xs text-gray-400 space-y-1">
+              <p><span className="text-amber-400">Email:</span> barbero@test.com</p>
+              <p><span className="text-amber-400">Contraseña:</span> 123456</p>
+            </div>
           </div>
         </div>
       </div>
