@@ -36,104 +36,89 @@ export default function LoginPage() {
         if (data.user.role === 'barber') {
           router.push('/barbero');
         } else {
-          setError('No tienes permisos de barbero');
+          setError('Access denied');
         }
       } else {
-        setError(data.error || 'Credenciales inválidas');
+        setError(data.error || 'Invalid credentials');
       }
     } catch (error) {
-      setError('Error al iniciar sesión');
+      setError('Connection error');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-10 left-10 w-20 h-20 border border-amber-400 rounded-full"></div>
-        <div className="absolute bottom-10 right-10 w-16 h-16 border border-amber-400 rounded-full"></div>
-        <div className="absolute top-1/3 right-1/4 w-12 h-12 border border-amber-400 rounded-full"></div>
-      </div>
+    <div className="min-h-screen bg-black text-white flex flex-col justify-center">
+      <div className="max-w-md mx-auto px-6 w-full">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="font-display text-4xl mb-4 tracking-tight">BARBER</h1>
+          <p className="text-gray-400 text-sm uppercase tracking-widest">Access Panel</p>
+        </div>
 
-      <div className="max-w-md w-full relative z-10">
-        <div className="bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-sm border border-gray-700/50 rounded-2xl shadow-2xl p-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full mb-4 shadow-lg">
-              <span className="text-2xl">✂️</span>
-            </div>
-            
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent mb-2">
-              Acceso Barbero
-            </h1>
-            <p className="text-gray-300">
-              Inicia sesión para gestionar turnos
-            </p>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div>
+            <label className="block text-sm uppercase tracking-wide text-gray-400 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              className="w-full bg-transparent border-b border-gray-800 py-3 focus:outline-none focus:border-white transition-colors"
+              placeholder="your@email.com"
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-white placeholder-gray-400 transition-all duration-300"
-                placeholder="tu@email.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                required
-                value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
-                className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-white placeholder-gray-400 transition-all duration-300"
-                placeholder="Tu contraseña"
-              />
-            </div>
-
-            {error && (
-              <div className="bg-red-900/50 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 disabled:from-amber-300 disabled:to-yellow-300 text-black py-3 px-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-amber-400/50"
-            >
-              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </button>
-          </form>
-
-          <div className="mt-8 text-center">
-            <Link 
-              href="/" 
-              className="text-gray-400 hover:text-amber-400 transition-colors duration-300 flex items-center justify-center"
-            >
-              <span className="mr-2">←</span> Volver al inicio
-            </Link>
+          <div>
+            <label className="block text-sm uppercase tracking-wide text-gray-400 mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              className="w-full bg-transparent border-b border-gray-800 py-3 focus:outline-none focus:border-white transition-colors"
+              placeholder="Your password"
+            />
           </div>
 
-          <div className="mt-6 p-4 bg-gray-700/30 border border-gray-600/50 rounded-lg backdrop-blur-sm">
-            <p className="text-sm text-gray-300 mb-2">
-              <strong className="text-amber-400">Credenciales de prueba:</strong>
-            </p>
-            <div className="text-xs text-gray-400 space-y-1">
-              <p><span className="text-amber-400">Email:</span> barbero@test.com</p>
-              <p><span className="text-amber-400">Contraseña:</span> 123456</p>
+          {error && (
+            <div className="text-white text-sm text-center border border-gray-600 bg-gray-900 p-3 rounded">
+              {error}
             </div>
-          </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-white text-black py-4 font-medium uppercase tracking-wide hover:bg-gray-100 disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+          >
+            {isLoading ? 'Signing In...' : 'Sign In'}
+          </button>
+        </form>
+
+        {/* Back Link */}
+        <div className="text-center mt-8">
+          <Link 
+            href="/" 
+            className="text-gray-500 hover:text-gray-300 text-sm uppercase tracking-wide transition-colors"
+          >
+            ← Back to Home
+          </Link>
+        </div>
+
+        {/* Demo Credentials */}
+        <div className="mt-12 p-4 border border-gray-800">
+          <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">Demo Access</p>
+          <p className="text-xs text-gray-500">
+            Email: barbero@test.com<br />
+            Password: 123456
+          </p>
         </div>
       </div>
     </div>

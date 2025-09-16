@@ -1,29 +1,28 @@
-import { Inter, Playfair_Display } from "next/font/google";
+import { Archivo_Black, Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const archivoBlack = Archivo_Black({
+  weight: "400",
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-archivo-black",
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-inter",
 });
 
 export const metadata = {
-  title: "BarberShop Pro - Sistema de Turnos Inteligente",
-  description: "Sistema de reservas profesional para barberías con notificaciones en tiempo real",
+  title: "BARBER",
+  description: "Minimalist barbershop booking system",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body
-        className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-black text-white`}
-      >
+      <body className={`${inter.variable} ${archivoBlack.variable} font-sans antialiased bg-black text-white`}>
         {children}
       </body>
     </html>
